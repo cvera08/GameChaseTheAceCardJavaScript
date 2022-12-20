@@ -226,8 +226,12 @@ function checkForIncompleteGame()
 
 function startGame(){
     initializeNewGame()
+    console.log(`Only for debugging purposes: 
+    Elements+Search>"card-AceSpades" OR 
+    Console>$(".card-img[src=\'/images/card-AceSpades.png\']") or 
+        document.querySelector(\'div[id="4"]\')`)
+    console.log('testing: div#3.card')
     startRound()
-
 }
 function initializeNewGame(){
     score = 0
@@ -250,7 +254,7 @@ function startRound()
     collectCards()
     flipCards(true)
     shuffleCards()
-
+    console.log(cards) //testing/debugging: div#3.card contains the Ace of Spades 
 }
 function initializeNewRound()
 {
