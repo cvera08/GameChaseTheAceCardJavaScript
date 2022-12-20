@@ -87,10 +87,10 @@ function endRound()
         {
             startRound()
         }
-    },3000)
+    },500)
 }
 
-function chooseCard(card)
+function chooseCard(card) //To reveal the remaining 3 cards
 {
     if(canChooseCard())
     {
@@ -104,7 +104,7 @@ function chooseCard(card)
 
             endRound()
 
-        },3000)
+        },500)
         cardsRevealed = true
     }
 
@@ -184,8 +184,6 @@ function canChooseCard()
 {
     return gameInProgress == true && !shufflingInProgress && !cardsRevealed
 }
-
-
 
 function loadGame(){
     createCards()
@@ -271,14 +269,13 @@ function initializeNewRound()
 function collectCards(){
     transformGridArea(collapsedGridAreaTemplate)
     addCardsToGridAreaCell(cardCollectionCellClass)
-
 }
 
 function transformGridArea(areas)
 {
     cardContainerElem.style.gridTemplateAreas = areas
-
 }
+
 function addCardsToGridAreaCell(cellPositionClassName)
 {
     const cellPositionElem = document.querySelector(cellPositionClassName)
@@ -286,7 +283,6 @@ function addCardsToGridAreaCell(cellPositionClassName)
     cards.forEach((card, index) =>{
         addChildElement(cellPositionElem, card)
     })
-
 }
 
 function flipCard(card, flipToBack)
@@ -327,16 +323,13 @@ function cardFlyInEffect()
             clearInterval(id)
             playGameButtonElem.style.display = "inline-block"            
         }
-        if(count == 1 || count == 250 || count == 500 || count == 750)
+        if(count == 1 || count == 100 || count == 200 || count == 300)
         {
             cardCount++
             let card = document.getElementById(cardCount)
             card.classList.remove("fly-in")
         }
     }
-
-
-
 }
 
 function removeShuffleClasses()
@@ -370,8 +363,7 @@ function animateShuffle(shuffleCount)
 function shuffleCards()
 {
     let shuffleCount = 0
-    const id = setInterval(shuffle, 12)
-
+    const id = setInterval(shuffle, 1)
 
     function shuffle()
     {
@@ -379,7 +371,7 @@ function shuffleCards()
        
         animateShuffle(shuffleCount)
        
-        if(shuffleCount == 500)
+        if(shuffleCount == 250)
         {
             clearInterval(id)
             shufflingInProgress = false
@@ -391,10 +383,10 @@ function shuffleCards()
         else{
             shuffleCount++
         }
-
     }
 
 }
+
 function randomizeCardPositions()
 {
     const random1 = Math.floor(Math.random() * numCards) + 1
@@ -406,6 +398,7 @@ function randomizeCardPositions()
     cardPositions[random2 - 1] = temp
 
 }
+
 function dealCards()
 {
     addCardsToAppropriateCell()
@@ -414,6 +407,7 @@ function dealCards()
     transformGridArea(areasTemplate)
 
 }
+
 function returnGridAreasMappedToCardPos()
 {
     let firstPart = ""
@@ -454,7 +448,6 @@ function returnGridAreasMappedToCardPos()
 
 }
 
-
 function addCardsToAppropriateCell()
 {
     cards.forEach((card)=>{
@@ -462,15 +455,12 @@ function addCardsToAppropriateCell()
     })
 }
 
-
-
 function createCards()
 {
     cardObjectDefinitions.forEach((cardItem)=>{
         createCard(cardItem)
     })
 }
-
 
 function createCard(cardItem){
 
@@ -530,11 +520,10 @@ function createCard(cardItem){
 
     initializeCardPositions(cardElem)
 
-    attatchClickEventHandlerToCard(cardElem)
-
-
+    attachClickEventHandlerToCard(cardElem)
 }
-function attatchClickEventHandlerToCard(card){
+
+function attachClickEventHandlerToCard(card){
     card.addEventListener('click', () => chooseCard(card))
 }
 
@@ -545,17 +534,20 @@ function initializeCardPositions(card)
 
 function createElement(elemType){
     return document.createElement(elemType)
-
 }
+
 function addClassToElement(elem, className){
     elem.classList.add(className)
 }
+
 function addIdToElement(elem, id){
     elem.id = id
 }
+
 function addSrcToImageElem(imgElem, src){
     imgElem.src = src
 }
+
 function addChildElement(parentElem, childElem){
     parentElem.appendChild(childElem)
 }
@@ -567,8 +559,8 @@ function addCardToGridCell(card)
     const cardPosElem = document.querySelector(cardPositionClassName)
 
     addChildElement(cardPosElem, card)
-
 }
+
 function mapCardIdToGridCell(card){
    
     if(card.id == 1)
@@ -594,18 +586,22 @@ function getSerializedObjectAsJSON(obj)
 {
     return JSON.stringify(obj)
 }
+
 function getObjectFromJSON(json)
 {
     return JSON.parse(json)
 }
-function updateLocalStorageItem(key, value)
+
+function updateLocalStorageItem(key, value) 
 {
     localStorage.setItem(key, value)
 }
+
 function removeLocalStorageItem(key)
 {
     localStorage.removeItem(key)
 }
+
 function getLocalStorageItemValue(key)
 {
     return localStorage.getItem(key)
@@ -616,6 +612,7 @@ function updateGameObject(score,round)
     gameObj.score = score
     gameObj.round = round
 }
+
 function saveGameObjectToLocalStorage(score,round)
 {
     updateGameObject(score, round)
