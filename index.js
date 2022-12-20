@@ -72,6 +72,7 @@ function gameOver()
     updateStatusElement(currentGameStatusElem,"block",primaryColor,gameOverMessage)
 
     gameInProgress = false
+    playGameButtonElem.style.display = "inline-block"
     playGameButtonElem.disabled = false
 }
 
@@ -87,7 +88,7 @@ function endRound()
         {
             startRound()
         }
-    },500)
+    },1500)
 }
 
 function chooseCard(card) //To reveal the remaining 3 cards
@@ -254,7 +255,7 @@ function startRound()
 function initializeNewRound()
 {
     roundNum++
-    playGameButtonElem.disabled = true
+    playGameButtonElem.style.display = "none"
 
     gameInProgress = true
     shufflingInProgress = true
