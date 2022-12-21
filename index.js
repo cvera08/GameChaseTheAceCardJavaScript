@@ -1,9 +1,9 @@
 
 const cardObjectDefinitions = [
-    {id:1, imagePath:'/images/card-KingHearts.png'},
-    {id:2, imagePath:'/images/card-JackClubs.png'},
-    {id:3, imagePath:'/images/card-QueenDiamonds.png'},
-    {id:4, imagePath:'/images/card-AceSpades.png'}
+    { id: 1, imagePath: '/images/card-KingHearts.png' },
+    { id: 2, imagePath: '/images/card-JackClubs.png' },
+    { id: 3, imagePath: '/images/card-QueenDiamonds.png' },
+    { id: 4, imagePath: '/images/card-AceSpades.png' }
 ]
 const aceId = 4
 
@@ -23,8 +23,8 @@ const numCards = cardObjectDefinitions.length
 let cardPositions = []
 
 
-let gameInProgress = false 
-let shufflingInProgress = false 
+let gameInProgress = false
+let shufflingInProgress = false
 let cardsRevealed = false
 
 
@@ -62,159 +62,133 @@ const localStorageGameKey = "HTA"
 loadGame()
 
 
-function gameOver()
-{
-    updateStatusElement(scoreContainerElem,"none")
-    updateStatusElement(roundContainerElem,"none")
+function gameOver() {
+    updateStatusElement(scoreContainerElem, "none")
+    updateStatusElement(roundContainerElem, "none")
 
     const gameOverMessage = `Game Over! Final Score - <span class = 'badge'>${score}</span> Click 'Play Game' button to play again`
 
-    updateStatusElement(currentGameStatusElem,"block",primaryColor,gameOverMessage)
+    updateStatusElement(currentGameStatusElem, "block", primaryColor, gameOverMessage)
 
     gameInProgress = false
     playGameButtonElem.style.display = "inline-block"
     playGameButtonElem.disabled = false
 }
 
-function endRound()
-{
-    setTimeout(()=>{
-        if(roundNum == maxRounds)
-        {
+function endRound() {
+    setTimeout(() => {
+        if (roundNum == maxRounds) {
             gameOver()
             return
         }
-        else
-        {
+        else {
             startRound()
         }
-    },1500)
+    }, 1500)
 }
 
 function chooseCard(card) //To reveal the remaining 3 cards
 {
-    if(canChooseCard())
-    {
+    if (canChooseCard()) {
         evaluateCardChoice(card)
         saveGameObjectToLocalStorage(score, roundNum)
-        flipCard(card,false)
+        flipCard(card, false)
 
         setTimeout(() => {
             flipCards(false)
-            updateStatusElement(currentGameStatusElem,"block", primaryColor,"Card positions revealed")
+            updateStatusElement(currentGameStatusElem, "block", primaryColor, "Card positions revealed")
 
             endRound()
 
-        },500)
+        }, 500)
         cardsRevealed = true
     }
 
 }
 
-function calculateScoreToAdd(roundNum)
-{
-    if(roundNum == 1)
-    {
+function calculateScoreToAdd(roundNum) {
+    if (roundNum == 1) {
         return 100
     }
-    else if(roundNum == 2)
-    {
+    else if (roundNum == 2) {
         return 50
     }
-    else if(roundNum == 3)
-    {
+    else if (roundNum == 3) {
         return 25
     }
-    else
-    {
+    else {
         return 10
     }
 }
 
-function calculateScore()
-{
+function calculateScore() {
     const scoreToAdd = calculateScoreToAdd(roundNum)
     score = score + scoreToAdd
 }
 
-function updateScore()
-{
+function updateScore() {
     calculateScore()
     updateStatusElement(scoreElem, "block", primaryColor, `Score <span class='badge'>${score}</span>`)
 
 }
 
-function updateStatusElement(elem, display, color, innerHTML)
-{
+function updateStatusElement(elem, display, color, innerHTML) {
     elem.style.display = display
 
-    if(arguments.length > 2)
-    {
+    if (arguments.length > 2) {
         elem.style.color = color
         elem.innerHTML = innerHTML
     }
 
 }
 
-function outputChoiceFeedBack(hit)
-{
-    if(hit)
-    {
+function outputChoiceFeedBack(hit) {
+    if (hit) {
         updateStatusElement(currentGameStatusElem, "block", winColor, "Hit!! - Well Done!! :)")
     }
-    else
-    {
+    else {
         updateStatusElement(currentGameStatusElem, "block", loseColor, "Missed!! :(")
     }
 }
 
-function evaluateCardChoice(card)
-{
-    if(card.id == aceId)
-    {
+function evaluateCardChoice(card) {
+    if (card.id == aceId) {
         updateScore()
         outputChoiceFeedBack(true)
     }
-    else
-    {
+    else {
         outputChoiceFeedBack(false)
     }
 }
 
-function canChooseCard()
-{
+function canChooseCard() {
     return gameInProgress == true && !shufflingInProgress && !cardsRevealed
 }
 
-function loadGame(){
+function loadGame() {
     createCards()
 
     cards = document.querySelectorAll('.card')
 
     cardFlyInEffect()
 
-    playGameButtonElem.addEventListener('click', ()=>startGame())
+    playGameButtonElem.addEventListener('click', () => startGame())
 
-    updateStatusElement(scoreContainerElem,"none")
-    updateStatusElement(roundContainerElem,"none")
+    updateStatusElement(scoreContainerElem, "none")
+    updateStatusElement(roundContainerElem, "none")
 
 }
 
-function checkForIncompleteGame()
-{
+function checkForIncompleteGame() {
     const serializedGameObj = getLocalStorageItemValue(localStorageGameKey)
-    if(serializedGameObj)
-    {
+    if (serializedGameObj) {
         gameObj = getObjectFromJSON(serializedGameObj)
 
-        if(gameObj.round >= maxRounds)
-        {
+        if (gameObj.round >= maxRounds) {
             removeLocalStorageItem(localStorageGameKey)
         }
-        else
-        {
-            if(confirm('Would you like to continue with your last game?'))
-            {
+        else {
+            if (confirm('Would you like to continue with your last game?')) {
                 score = gameObj.score
                 roundNum = gameObj.round
             }
@@ -224,7 +198,7 @@ function checkForIncompleteGame()
 
 }
 
-function startGame(){
+function startGame() {
     initializeNewGame()
     console.log(`Only for debugging purposes: 
     Elements+Search>"card-AceSpades" OR 
@@ -233,7 +207,7 @@ function startGame(){
     console.log('testing: div#3.card')
     startRound()
 }
-function initializeNewGame(){
+function initializeNewGame() {
     score = 0
     roundNum = 0
 
@@ -241,23 +215,21 @@ function initializeNewGame(){
 
     shufflingInProgress = false
 
-    updateStatusElement(scoreContainerElem,"flex")
-    updateStatusElement(roundContainerElem,"flex")
+    updateStatusElement(scoreContainerElem, "flex")
+    updateStatusElement(roundContainerElem, "flex")
 
-    updateStatusElement(scoreElem,"block",primaryColor,`Score <span class='badge'>${score}</span>`)
-    updateStatusElement(roundElem,"block",primaryColor,`Round <span class='badge'>${roundNum}</span>`)
+    updateStatusElement(scoreElem, "block", primaryColor, `Score <span class='badge'>${score}</span>`)
+    updateStatusElement(roundElem, "block", primaryColor, `Round <span class='badge'>${roundNum}</span>`)
 
 }
-function startRound()
-{
+function startRound() {
     initializeNewRound()
     collectCards()
     flipCards(true)
     shuffleCards()
     console.log(cards) //testing/debugging: div#3.card contains the Ace of Spades 
 }
-function initializeNewRound()
-{
+function initializeNewRound() {
     roundNum++
     playGameButtonElem.style.display = "none"
 
@@ -266,70 +238,61 @@ function initializeNewRound()
     cardsRevealed = false
 
     updateStatusElement(currentGameStatusElem, "block", primaryColor, "Shuffling...")
-    
+
     updateStatusElement(roundElem, "block", primaryColor, `Round <span class='badge'>${roundNum}</span>`)
 
 }
 
-function collectCards(){
+function collectCards() {
     transformGridArea(collapsedGridAreaTemplate)
     addCardsToGridAreaCell(cardCollectionCellClass)
 }
 
-function transformGridArea(areas)
-{
+function transformGridArea(areas) {
     cardContainerElem.style.gridTemplateAreas = areas
 }
 
-function addCardsToGridAreaCell(cellPositionClassName)
-{
+function addCardsToGridAreaCell(cellPositionClassName) {
     const cellPositionElem = document.querySelector(cellPositionClassName)
 
-    cards.forEach((card, index) =>{
+    cards.forEach((card, index) => {
         addChildElement(cellPositionElem, card)
     })
 }
 
-function flipCard(card, flipToBack)
-{
+function flipCard(card, flipToBack) {
     const innerCardElem = card.firstChild
 
-    if(flipToBack && !innerCardElem.classList.contains('flip-it'))
-    {
+    if (flipToBack && !innerCardElem.classList.contains('flip-it')) {
         innerCardElem.classList.add('flip-it')
     }
-    else if(innerCardElem.classList.contains('flip-it'))
-    {
+    else if (innerCardElem.classList.contains('flip-it')) {
         innerCardElem.classList.remove('flip-it')
     }
 
 }
 
-function flipCards(flipToBack){
-    cards.forEach((card,index)=>{
+function flipCards(flipToBack) {
+    cards.forEach((card, index) => {
         setTimeout(() => {
-            flipCard(card,flipToBack)
-        },index * 100)
+            flipCard(card, flipToBack)
+        }, index * 100)
     })
 }
 
-function cardFlyInEffect()
-{
+function cardFlyInEffect() {
     const id = setInterval(flyIn, 5)
     let cardCount = 0
 
     let count = 0
 
-    function flyIn()
-    {
+    function flyIn() {
         count++
-        if(cardCount == numCards)
-        {
+        if (cardCount == numCards) {
             clearInterval(id)
-            playGameButtonElem.style.display = "inline-block"            
+            playGameButtonElem.style.display = "inline-block"
         }
-        if(count == 1 || count == 100 || count == 200 || count == 300)
-        {
+        if (count == 1 || count == 100 || count == 200 || count == 300) {
             cardCount++
             let card = document.getElementById(cardCount)
             card.classList.remove("fly-in")
@@ -337,47 +300,40 @@ function cardFlyInEffect()
     }
 }
 
-function removeShuffleClasses()
-{
-    cards.forEach((card) =>{
+function removeShuffleClasses() {
+    cards.forEach((card) => {
         card.classList.remove("shuffle-left")
         card.classList.remove("shuffle-right")
     })
 }
-function animateShuffle(shuffleCount)
-{
+function animateShuffle(shuffleCount) {
     const random1 = Math.floor(Math.random() * numCards) + 1
     const random2 = Math.floor(Math.random() * numCards) + 1
 
     let card1 = document.getElementById(random1)
     let card2 = document.getElementById(random2)
 
-    if (shuffleCount % 4 == 0)
-    {
+    if (shuffleCount % 4 == 0) {
         card1.classList.toggle("shuffle-left")
         card1.style.zIndex = 100
     }
-    if (shuffleCount % 10 == 0)
-    {
+    if (shuffleCount % 10 == 0) {
         card2.classList.toggle("shuffle-right")
         card2.style.zIndex = 200
     }
 
 }
 
-function shuffleCards()
-{
+function shuffleCards() {
     let shuffleCount = 0
     const id = setInterval(shuffle, 1)
 
-    function shuffle()
-    {
+    function shuffle() {
         randomizeCardPositions()
-       
+
         animateShuffle(shuffleCount)
-       
-        if(shuffleCount == 250)
-        {
+
+        if (shuffleCount == 250) {
             clearInterval(id)
             shufflingInProgress = false
             removeShuffleClasses()
@@ -385,15 +341,14 @@ function shuffleCards()
             updateStatusElement(currentGameStatusElem, "block", primaryColor, "Please click the card that you think is the Ace of Spades...")
 
         }
-        else{
+        else {
             shuffleCount++
         }
     }
 
 }
 
-function randomizeCardPositions()
-{
+function randomizeCardPositions() {
     const random1 = Math.floor(Math.random() * numCards) + 1
     const random2 = Math.floor(Math.random() * numCards) + 1
 
@@ -404,8 +359,7 @@ function randomizeCardPositions()
 
 }
 
-function dealCards()
-{
+function dealCards() {
     addCardsToAppropriateCell()
     const areasTemplate = returnGridAreasMappedToCardPos()
 
@@ -413,36 +367,29 @@ function dealCards()
 
 }
 
-function returnGridAreasMappedToCardPos()
-{
+function returnGridAreasMappedToCardPos() {
     let firstPart = ""
     let secondPart = ""
     let areas = ""
 
     cards.forEach((card, index) => {
-        if(cardPositions[index] == 1)
-        {
+        if (cardPositions[index] == 1) {
             areas = areas + "a "
         }
-        else if(cardPositions[index] == 2)
-        {
+        else if (cardPositions[index] == 2) {
             areas = areas + "b "
         }
-        else if (cardPositions[index] == 3)
-        {
+        else if (cardPositions[index] == 3) {
             areas = areas + "c "
         }
-        else if (cardPositions[index] == 4)
-        {
+        else if (cardPositions[index] == 4) {
             areas = areas + "d "
         }
-        if (index == 1)
-        {
+        if (index == 1) {
             firstPart = areas.substring(0, areas.length - 1)
             areas = "";
         }
-        else if (index == 3)
-        {
+        else if (index == 3) {
             secondPart = areas.substring(0, areas.length - 1)
         }
 
@@ -453,21 +400,19 @@ function returnGridAreasMappedToCardPos()
 
 }
 
-function addCardsToAppropriateCell()
-{
-    cards.forEach((card)=>{
+function addCardsToAppropriateCell() {
+    cards.forEach((card) => {
         addCardToGridCell(card)
     })
 }
 
-function createCards()
-{
-    cardObjectDefinitions.forEach((cardItem)=>{
+function createCards() {
+    cardObjectDefinitions.forEach((cardItem) => {
         createCard(cardItem)
     })
 }
 
-function createCard(cardItem){
+function createCard(cardItem) {
 
     //create div elements that make up a card
     const cardElem = createElement('div')
@@ -486,7 +431,7 @@ function createCard(cardItem){
 
     //add class to inner card element
     addClassToElement(cardInnerElem, 'card-inner')
-    
+
     //add class to front card element
     addClassToElement(cardFrontElem, 'card-front')
 
@@ -501,7 +446,7 @@ function createCard(cardItem){
 
     //assign class to back image element of back of card
     addClassToElement(cardBackImg, 'card-img')
-   
+
     //assign class to front image element of front of card
     addClassToElement(cardFrontImg, 'card-img')
 
@@ -528,37 +473,35 @@ function createCard(cardItem){
     attachClickEventHandlerToCard(cardElem)
 }
 
-function attachClickEventHandlerToCard(card){
+function attachClickEventHandlerToCard(card) {
     card.addEventListener('click', () => chooseCard(card))
 }
 
-function initializeCardPositions(card)
-{
+function initializeCardPositions(card) {
     cardPositions.push(card.id)
 }
 
-function createElement(elemType){
+function createElement(elemType) {
     return document.createElement(elemType)
 }
 
-function addClassToElement(elem, className){
+function addClassToElement(elem, className) {
     elem.classList.add(className)
 }
 
-function addIdToElement(elem, id){
+function addIdToElement(elem, id) {
     elem.id = id
 }
 
-function addSrcToImageElem(imgElem, src){
+function addSrcToImageElem(imgElem, src) {
     imgElem.src = src
 }
 
-function addChildElement(parentElem, childElem){
+function addChildElement(parentElem, childElem) {
     parentElem.appendChild(childElem)
 }
 
-function addCardToGridCell(card)
-{
+function addCardToGridCell(card) {
     const cardPositionClassName = mapCardIdToGridCell(card)
 
     const cardPosElem = document.querySelector(cardPositionClassName)
@@ -566,60 +509,49 @@ function addCardToGridCell(card)
     addChildElement(cardPosElem, card)
 }
 
-function mapCardIdToGridCell(card){
-   
-    if(card.id == 1)
-    {
+function mapCardIdToGridCell(card) {
+
+    if (card.id == 1) {
         return '.card-pos-a'
     }
-    else if(card.id == 2)
-    {
+    else if (card.id == 2) {
         return '.card-pos-b'
     }
-    else if(card.id == 3)
-    {
+    else if (card.id == 3) {
         return '.card-pos-c'
     }
-    else if(card.id == 4)
-    {
+    else if (card.id == 4) {
         return '.card-pos-d'
     }
 }
 
 //local storage functions
-function getSerializedObjectAsJSON(obj)
-{
+function getSerializedObjectAsJSON(obj) {
     return JSON.stringify(obj)
 }
 
-function getObjectFromJSON(json)
-{
+function getObjectFromJSON(json) {
     return JSON.parse(json)
 }
 
-function updateLocalStorageItem(key, value) 
-{
+function updateLocalStorageItem(key, value) {
     localStorage.setItem(key, value)
 }
 
-function removeLocalStorageItem(key)
-{
+function removeLocalStorageItem(key) {
     localStorage.removeItem(key)
 }
 
-function getLocalStorageItemValue(key)
-{
+function getLocalStorageItemValue(key) {
     return localStorage.getItem(key)
 }
 
-function updateGameObject(score,round)
-{
+function updateGameObject(score, round) {
     gameObj.score = score
     gameObj.round = round
 }
 
-function saveGameObjectToLocalStorage(score,round)
-{
+function saveGameObjectToLocalStorage(score, round) {
     updateGameObject(score, round)
     updateLocalStorageItem(localStorageGameKey, getSerializedObjectAsJSON(gameObj))
 }
