@@ -1,3 +1,4 @@
+import $ from 'https://cdn.skypack.dev/jquery'
 
 const cardObjectDefinitions = [
     { id: 1, imagePath: '/images/card-KingHearts.png' },
@@ -204,7 +205,6 @@ function startGame() {
     Elements+Search>"card-AceSpades" OR 
     Console>$(".card-img[src=\'/images/card-AceSpades.png\']") or 
         document.querySelector(\'div[id="4"]\')`)
-    console.log('testing: div#3.card')
     startRound()
 }
 function initializeNewGame() {
@@ -227,7 +227,8 @@ function startRound() {
     collectCards()
     flipCards(true)
     shuffleCards()
-    console.log(cards) //testing/debugging: div#3.card contains the Ace of Spades 
+    console.log('div#4.card', cards) //testing/debugging: div#4.card contains the Ace of Spades 
+    console.log($('.card-img[src=\'/images/card-AceSpades.png\']')) //$('.card-img[src=\'/images/card-AceSpades.png\']')[0]
 }
 function initializeNewRound() {
     roundNum++
