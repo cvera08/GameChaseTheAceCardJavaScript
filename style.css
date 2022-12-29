@@ -28,7 +28,8 @@ main {
   height: 55%;
   display: flex;
   justify-content: center;
-
+  min-height: 450px;
+  margin-bottom: 10px;
 }
 
 .card-container {
@@ -249,6 +250,7 @@ header {
 
   main {
     height: 50%;
+    min-height: 360px;
   }
 
   .current-status {
@@ -355,7 +357,9 @@ header {
 
 @media (max-width:767px) {
   .site-footer {
-    padding-bottom: 0
+    padding-bottom: 0;
+    max-height: 20%;
+    overflow: scroll;
   }
 
   .site-footer .copyright-text,
