@@ -25,6 +25,7 @@ body {
 }
 
 main {
+  /* height: 40vw; */
   height: 55%;
   display: flex;
   justify-content: center;
@@ -371,6 +372,17 @@ header {
     /* visibility: hidden; */
     display: none;
   }
+
+  .social-icons li.title {
+    display: block;
+    margin-right: 0;
+    font-weight: 600
+  }
+
+  .header-round-info-container {
+    max-width: 340px;
+    margin: 0 auto;
+  }
 }
 
 .social-icons {
@@ -441,12 +453,4 @@ header {
 .social-icons a.github:hover {
   background-color: #24292f;
 
-}
-
-@media (max-width:767px) {
-  .social-icons li.title {
-    display: block;
-    margin-right: 0;
-    font-weight: 600
-  }
 }
