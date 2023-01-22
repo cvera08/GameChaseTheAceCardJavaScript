@@ -79,7 +79,7 @@ ___
 ## Online resources:[![](https://i.ibb.co/2kHmnLX/image.png)](#online)
 
 Live Site:
-- https://game-chase-the-ace-card-java-script.vercel.app/
+- https://chase-the-ace.vercel.app/
 
 _Open the above URL with a non-chrome browser if the link does not work_
 
